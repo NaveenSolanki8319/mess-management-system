@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
+    <title>Mess Management System</title>
+</head>
+
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <div class="container-fluid ">
+        <nav class="navbar navbar-dark bg-dark fixed-top mb-5">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold fs-4">Mess Management System</a>
+                <a class="justify-content-center navbar-brand fw-bold fs-4 me-5"> </a>
+                <a href="{{url_for('logout')}}" type="button" class="btn btn-outline-warning mx-2 fs-6">Logout</a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container-fluid mt-5 pt-4">
+        {% with messages = get_flashed_messages() %}  
+            {% if messages %}  
+                {% for message in messages %}  
+                <div class="alert alert-secondary alert-dismissible fade show " role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endfor %}  
+            {% endif %}  
+        {% endwith %}  
+    </div>
+
+    <div class="container-fluid mt-1 p-2">
+        <div style="margin:0 ;" class="row mt-2">
+            <div class="col-md-3">
+                <div class="card border-dark mb-3" style="max-width: 18rem;">
+                    <div class="card-header fs-4 text-center">Important Notice</div>
+                    <div class="card-body text-dark">
+                        <p class="card-text"><b>1. </b> Please always wear mask and sentize your hands timely.</p>
+                        <p class="card-text"><b>2. </b>Always maintain social distance.</p>
+                        <p class="card-text"><b>3. </b>Pay your fees On-Time.</p>
+                        <p class="card-text"><b>4. </b>Give your valuable feebback to improve us.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="card border-dark mb-3">
+                    <div class="card-header fs-4 text-center">Today's Menu</div>
+                    <div class="card-body text-dark">
+                        <p class="card-text"><b>Breakfast: </b>{% for data in menu %}{{ data.breakfast }}{% endfor %}</p>
+                        <p class="card-text"><b>Lunch: </b>{% for data in menu %}{{ data.lunch }}{% endfor %}</p>
+                        <p class="card-text"><b>Snacks:</b>{% for data in menu %}{{ data.snacks }}{% endfor %}</p>
+                        <p class="card-text"><b>Dinner:</b>{% for data in menu %}{{ data.dinner }}{% endfor %}</p>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid mt-1 p-2">
+        <div style="margin:0 ;" class="row mt-1">
+            <div class="col-md-9">
+                <div class="card border-dark mb-3">
+                    <div class="card-header fs-4 text-center"> Services </div>
+                    <div class="card-body text-dark">
+                        <p class="card-text"><b>1.</b>Delicious everyday food using choicest raw materials, delivered to your doorstep.</p>
+                        <p class="card-text"><b>2. </b>Home-style meals, prepared in state-of the art automated kitchen. The kitchen maintains the highest levels of hygiene and sanitization while handling food.</p>
+                        <p class="card-text"><b>3.</b>Serving North-Indian, South-Indian and desi-Chinese cuisines, choose from Vegetarian and Non-Vegetarian meal options.</p>
+                        <p class="card-text"><b>4.</b> FSSC certified 22000 Kitchen; only 4 in India and 35 in the world.“Pull up a chair. Take a taste. Come join us. Life is so endlessly delicious.”</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-dark mb-3" style="max-width: 18rem;">
+                    <div class="card-header fs-4 text-center">Mess Timings</div>
+                    <div class="card-body text-dark">
+                        <p class="card-text"><b>Breakfast :</b> 8:00 AM to 9:00 AM</p>
+                        <p class="card-text"><b>Lunch     :</b> 12:00 PM to 2:00 PM</p>
+                        <p class="card-text"><b>Snacks    :</b> 4:00 PM to 5:00 PM</p>
+                        <p class="card-text"><b>Dinner    :</b> 8:00 PM to 9:30 PM</p>
+                        <h5 class="text-center">Please Be On Time. </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="border border-light p-3 mb-4 text-center  ">
+        <div class="d-grid gap-3 col-2 mx-auto">
+            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#feedback">Submit Feedback</button>
+            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#editProfile">Edit Profile</button>
+            <form action="{{url_for('fees_status')}}" method="POST">
+                <div class="text-center">
+                    <button type="submit " class="btn btn-danger col-12 mx-auto">View Fees Status</button>
+                    <div class="toast-body">
+                        <h5 class="btn btn-outline-dark">Your fees is : {{ feesStatus }}</h5>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editProfile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="static">Edit here</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body ">
+                    <form action="{{url_for('edit_user')}}" method="POST">
+                        <div class="mb-3 ">
+                            <label for="recipient-name " class="col-form-label ">Name:</label>
+                            <input type="text " class="form-control " id="recipient-name " required="1" name="name" maxlength="20">
+                        </div>
+                        <div class="mb-3 ">
+                            <label for="recipient-address " class="col-form-label ">Address:</label>
+                            <input type="text " class="form-control " id="recipient-address " required="1" name="address" maxlength="30">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="col-form-label">Password:</label>
+                            <input type="password" class="form-control" id="password" required="1" name="password" maxlength="10">
+                        </div>
+                        <div class="mb-3 text-center d-grid gap-1">
+                            <button type="submit" class="btn btn-primary text-center ">Submit</button>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="feedback" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="Feedbackstatic">Feedback here</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body ">
+                    <form action="{{url_for('submit_feedback')}}" method="POST">
+                        <div class="mb-3 ">
+                            <label for="user-rating " class="col-form-label ">User Rating (1 to 5):</label>
+                            <input type="number" class="form-control " id="rating " name="rating" min="1" max="5" required="1" maxlength="1">
+                        </div>
+                        <div class="mb-3 ">
+                            <label for="user-message " class="col-form-label ">Message :</label>
+                            <textarea type="text-area " class="form-control " id="message " name="message" required="1" maxlength="100"></textarea>
+                        </div>
+                        <div class="mb-3 text-center d-grid gap-1">
+                            <button type="submit text-center" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+
+</html>

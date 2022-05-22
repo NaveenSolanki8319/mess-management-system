@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
+    <link href='https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css' rel='stylesheet' type='text/css'>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
+    <title>Mess Management System</title>
+
+</head>
+
+
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <div class="container-fluid ">
+        <nav class="navbar navbar-dark bg-dark fixed-top mb-5">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold fs-4">Mess Management System</a>
+                <a class="justify-content-center navbar-brand fw-bold fs-4 me-5">Welcome, Admin</a>
+                <a href="{{url_for('index')}}" type="button" class="btn btn-outline-warning mx-2 fs-6">Logout</a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container-fluid mt-5 pt-4">
+        {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+        <div class="alert alert-secondary alert-dismissible fade show " role="alert">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %} {% endif %} {% endwith %}
+    </div>
+
+    <div class="mt-5 container-fluid">
+        <div style="margin:0 ;" class="row ">
+
+            <div class="col-md-12 mt-2">
+                <h3 class="text-center">Update/Delete User</h3>
+                {% if data|length==0 %}
+                <div class="alert alert-dark" role="alert">
+                    No Record Found. Please Insert Record !
+                </div>
+                {% else %}
+                <table id="table" class="table table-striped">
+
+                    <thead>
+                        <tr>
+                            <th scope="col">I.D.</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email Address</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Fees_status</th>
+                            <th scope="col">Feedback</th>
+                            <th scope="col">Rating</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Delete</th>
+                            <th scope="col">Update</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for data in data %}
+                        <tr>
+                            <tr>
+                                <th scope="row">{{ data.id }}</th>
+                                <td>{{data.name}}</td>
+                                <td>{{data.email }}</td>
+                                <td>{{data.address }}</td>
+                                <td>{{ data.fees_status }}</td>
+                                <td>{{ data.feedback }}</td>
+                                <td>{{ data.rating }}</td>
+                                <td>{{ data.amount }}</td>
+                                <td>
+                                    <a href={{url_for( 'delete_user',id=data.id) }} type="button" class="btn btn-outline-danger btn-sm mx-2">Delete</a>
+                                </td>
+                                <td>
+                                    <a href="{{url_for('update_user',id=data.id) }}" type="button" class="btn btn-outline-success  btn-sm mx-2">Update</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 container-fluid p-2 alert alert-dark">
+        <div style="margin:0 ;" class="row mt-5 mb-5">
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <strong>Fees Status</strong>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="m-5">{{ percent }}% user have paid fees</h4>
+                        <br>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <strong>Good Day !</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <strong>Pay Fees</strong>
+                    </div>
+                    <div class="card-body d-grid ">
+                        <form action="{{url_for('pay_fees')}}" method="POST">
+                            <div class=" ">
+                                <label for="user-id " class="col-form-label ">Enter ID :</label>
+                                <input type="number " class="form-control " id="user-id " placeholder="User I.D. here " name="id" required=1 maxlength="2">
+                            </div>
+                            <div class=" ">
+                                <label for="amount " class="form-label ">Enter Amount :</label>
+                                <input type="number " class="form-control " id="amount " placeholder="Amount Here " name="amount" required=1 maxlength="5">
+                            </div>
+                            <div class="text-center mt-2">
+                                <button type="submit " class="btn btn-primary ">Pay Fees</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 ">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <strong>Feedback</strong>
+                    </div>
+                    <div class="card-body m-4">
+                        <h4 class="mt-3">Excellent {{ countFive }}% user rated.</h4>
+                        <h4 class="mt-3">Poor {{ countZero }}% user rated.</h4>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <strong>Take Healthy Food !</strong>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class=" container-fluid ">
+        <div style="margin:0 ;" class="row ">
+            <div class="col-md-4">
+            </div>
+
+            <div class="col-md-4 ">
+                <div class="text-center mb-5">
+                    <button type="button " class="btn btn-outline-dark btn-lg" data-bs-toggle="modal" data-bs-target="#updateMenu">Update Menu</button>
+                </div>
+            </div>
+            <div class="col-md-4 ">
+            </div>
+        </div>
+    </div>
+
+    <div style="margin:0 ;" class="mt-5 container-fluid">
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <h3 class="text-center">User Information</h3>
+                {% if data|length==0 %}
+                <div class="alert alert-dark" role="alert">
+                    No Record Found. Please Insert Record !
+                </div>
+                {% else %}
+                <table id="userTable" class="table table-striped">
+
+                    <thead>
+                        <tr>
+                            <th scope="col">I.D.</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email Address</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Fees_status</th>
+                            <th scope="col">Feedback</th>
+                            <th scope="col">Rating</th>
+                            <th scope="col">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for data in data %}
+                        <tr>
+                            <tr>
+                                <th scope="row">{{ data.id }}</th>
+                                <td>{{data.name}}</td>
+                                <td>{{data.email }}</td>
+                                <td>{{data.address }}</td>
+                                <td>{{ data.fees_status }}</td>
+                                <td>{{ data.feedback }}</td>
+                                <td>{{ data.rating }}</td>
+                                <td>{{ data.amount }}</td>
+
+                            </tr>
+                            {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            var empDataTable = $('#userTable').DataTable({
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'post',
+                'ajax': {
+                    'url': '/ajaxfile'
+                },
+                'lengthMenu': [
+                    [5, 10, 25, 50, ],
+                    [5, 10, 25, 50]
+                ],
+                searching: true,
+                sort: false,
+                "serverSide": true,
+                'columns': [{
+                    data: 'id'
+                }, {
+                    data: 'name'
+                }, {
+                    data: 'email'
+                }, {
+                    data: 'address'
+                }, {
+                    data: 'fees_status'
+                }, {
+                    data: 'feedback'
+                }, {
+                    data: 'rating'
+                }, {
+                    data: 'amount'
+                }, ]
+            });
+
+        });
+    </script>
+
+    <div class="modal fade" id="updateMenu" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="static">Update Menu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body ">
+                    <form action="{{url_for('menu_update')}}" method="POST">
+                        <div class="mb-3 ">
+                            <label for="breakfast " class="col-form-label ">Breakfast:</label>
+                            <textarea type="text-area " class="form-control " id="breakfast " required="1 " name="breakfast" maxlength="100"></textarea>
+                        </div>
+                        <div class="mb-3 ">
+                            <label for="lunch " class="col-form-label ">Lunch:</label>
+                            <textarea type="text-area " class="form-control " id="lunch " required="1 " name="lunch" maxlength="100"></textarea>
+                        </div>
+                        <div class="mb-3 ">
+                            <label for="snacks " class="col-form-label ">Snacks:</label>
+                            <textarea type="text-area " class="form-control " id="snacks " required="1 " name="snacks" maxlength="100"></textarea>
+                        </div>
+                        <div class="mb-3 ">
+                            <label for="dinner " class="col-form-label ">Dinner:</label>
+                            <textarea type="text-area " class="form-control " id="dinner " required="1 " name="dinner" maxlength="100"></textarea>
+                        </div>
+                        <div class="mb-3 text-center d-grid gap-1 ">
+                            <button type="submit " class="btn btn-primary text-center ">Submit</button>
+                        </div>
+                    </form>
+                    <div class="modal-footer ">
+                        <button type="button " class="btn btn-secondary " data-bs-dismiss="modal ">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<footer class="bg-dark text-center text-white mt-5 ">
+    <!-- Copyright -->
+    <div class="text-center p-3 " style="background-color: rgba(0, 0, 0, 0.2); ">
+        © 2022 Copyright: Naveen Solanki
+    </div>
+    <!-- Copyright -->
+</footer>
+
+</html>
